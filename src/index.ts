@@ -1,3 +1,3 @@
-import { detectUnusedResolvers } from "./detectUnusedResolvers";
+import { detectUnusedOperations } from "./detectUnusedOperations";
 
-export { detectUnusedResolvers };
+export { detectUnusedOperations };

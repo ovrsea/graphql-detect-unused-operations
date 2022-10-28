@@ -11,9 +11,9 @@ import { parseSchema } from "./parseSchema";
 import { Schema } from "./schema";
 import { isPath } from "./typeGuards";
 
-export type FragmentsAndResolvers = {
+export type FragmentsAndOperations = {
   declaredFragments: string[];
-  resolvedResolvers: string[];
+  resolvedOperations: string[];
   spreadFragments: string[];
 };
 
@@ -27,9 +27,9 @@ type Options = {
   whitelist?: FilePath | string[];
 };
 
-const defaultReduceValues: FragmentsAndResolvers = {
+const defaultReduceValues: FragmentsAndOperations = {
   declaredFragments: [],
-  resolvedResolvers: [],
+  resolvedOperations: [],
   spreadFragments: [],
 };
 
@@ -70,24 +70,24 @@ export const getFilesRecursively = (
   });
 };
 
-const getUnionOfFragmentsAndResolvers = (
-  acc: FragmentsAndResolvers,
+const getUnionOfFragmentsAndOperations = (
+  acc: FragmentsAndOperations,
   {
     declaredFragments,
-    resolvedResolvers,
+    resolvedOperations,
     spreadFragments,
-  }: FragmentsAndResolvers
+  }: FragmentsAndOperations
 ) => {
   return {
     declaredFragments: union(acc.declaredFragments, declaredFragments),
-    resolvedResolvers: union(acc.resolvedResolvers, resolvedResolvers),
+    resolvedOperations: union(acc.resolvedOperations, resolvedOperations),
     spreadFragments: union(acc.spreadFragments, spreadFragments),
   };
 };
 
 const loadAndParseFile =
   (verbose?: boolean) =>
-  async (file: string): Promise<FragmentsAndResolvers> => {
+  async (file: string): Promise<FragmentsAndOperations> => {
     if (verbose) {
       console.log("\x1b[36m%s\x1b[0m", "File", file);
     }
@@ -102,10 +102,10 @@ const loadAndParseFile =
         .map(({ document }: Source) => {
           return parseDocumentNode(document as DocumentNode);
         })
-        .reduce((acc, currentFragmentsAndResolvers) => {
-          return getUnionOfFragmentsAndResolvers(
+        .reduce((acc, currentFragmentsAndOperations) => {
+          return getUnionOfFragmentsAndOperations(
             acc,
-            currentFragmentsAndResolvers
+            currentFragmentsAndOperations
           );
         }, defaultReduceValues);
 
@@ -115,25 +115,25 @@ const loadAndParseFile =
     }
   };
 
-const getAllFragmentsAndResolvers = async (
+const getAllFragmentsAndOperations = async (
   files: string[],
   verbose?: boolean
 ) => {
   return (await Promise.all(files.map(loadAndParseFile(verbose)))).reduce(
-    (acc, currentFragmentsAndResolvers) => {
-      return getUnionOfFragmentsAndResolvers(acc, currentFragmentsAndResolvers);
+    (acc, currentFragmentsAndOperations) => {
+      return getUnionOfFragmentsAndOperations(acc, currentFragmentsAndOperations);
     },
     defaultReduceValues
   );
 };
 
-export const detectUnusedResolvers = async (
+export const detectUnusedOperations = async (
   schema: Schema,
   options: Options = {}
 ): Promise<{
-  unnecessarilyWhitelistedResolvers: string[];
+  unnecessarilyWhitelistedOperations: string[];
   unusedFragments: string[];
-  unusedResolvers: string[];
+  unusedOperations: string[];
 }> => {
   const {
     cwd = "",
@@ -142,9 +142,9 @@ export const detectUnusedResolvers = async (
     verbose = false,
     whitelist = "./.unused-operations-whitelist",
   } = options;
-  const schemaResolversList = parseSchema(schema);
+  const schemaOperationsList = parseSchema(schema);
 
-  if (!schemaResolversList.length) {
+  if (!schemaOperationsList.length) {
     throw new Error("Bloody schema without queries or mutations");
   }
 
@@ -155,44 +155,44 @@ export const detectUnusedResolvers = async (
   }
 
   // eslint-disable-next-line
-  const allFragmentsAndResolvers: FragmentsAndResolvers =
-    await getAllFragmentsAndResolvers(files);
-  const whitelistFragmentsAndResolvers = isPath(whitelist)
+  const allFragmentsAndOperations: FragmentsAndOperations =
+    await getAllFragmentsAndOperations(files);
+  const whitelistFragmentsAndOperations = isPath(whitelist)
     ? readFileToArray(whitelist)
     : whitelist;
 
   if (verbose) {
     console.log(
       "\x1b[36m%s\x1b[0m",
-      "schemaResolversList",
-      schemaResolversList
+      "schemaOperationsList",
+      schemaOperationsList
     );
     console.log(
       "\x1b[36m%s\x1b[0m",
-      "allFragmentsAndResolvers",
-      allFragmentsAndResolvers
+      "allFragmentsAndOperations",
+      allFragmentsAndOperations
     );
     console.log(
       "\x1b[36m%s\x1b[0m",
       "whitelistCalls",
-      whitelistFragmentsAndResolvers
+      whitelistFragmentsAndOperations
     );
   }
 
   return {
-    unnecessarilyWhitelistedResolvers: intersection(
-      whitelistFragmentsAndResolvers,
-      allFragmentsAndResolvers.resolvedResolvers
+    unnecessarilyWhitelistedOperations: intersection(
+      whitelistFragmentsAndOperations,
+      allFragmentsAndOperations.resolvedOperations
     ),
     unusedFragments: difference(
-      allFragmentsAndResolvers.declaredFragments,
-      allFragmentsAndResolvers.spreadFragments
+      allFragmentsAndOperations.declaredFragments,
+      allFragmentsAndOperations.spreadFragments
     ),
-    unusedResolvers: difference(
-      schemaResolversList,
+    unusedOperations: difference(
+      schemaOperationsList,
       union(
-        allFragmentsAndResolvers.resolvedResolvers,
-        whitelistFragmentsAndResolvers
+        allFragmentsAndOperations.resolvedOperations,
+        whitelistFragmentsAndOperations
       )
     ),
   };
