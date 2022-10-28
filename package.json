@@ -23,7 +23,7 @@
     "schema:unusedOperations": "ts-node ./scripts/checkUnusedResolvers.ts",
     "test": "jest --watch",
     "ci": "jest",
-    "package:publish": "npm build && npm publish"
+    "package:publish": "npm run build && npm publish"
   },
   "author": "Ovrsea",
   "license": "MIT",
