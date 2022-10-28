@@ -1,6 +1,6 @@
-# Ovrsea GraphQL Schema Checker
+# Ovrsea GraphQL Unused Operations Detector 
 
-A GraphQL Schema Checker that reads through your codebase and compares the graphql operations (queries & mutations) and fragments used with your project's graphql `schema.json` and returns the unused operations and fragments to keep a clean codebase.
+A `GraphQL Unused Operations Detector` that reads through your codebase and compares the graphql operations (queries & mutations) and fragments used with your project's graphql `schema.json` and returns the unused operations and fragments to keep a clean codebase.
 
 ## Quickstart
 
