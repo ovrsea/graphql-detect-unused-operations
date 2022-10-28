@@ -1,6 +1,6 @@
 {
   "name": "@ovrsea/graphql-detect-unused-operations",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Library to check unused resolvers at Ovrsea",
   "keywords": [
     "graphql",
@@ -18,11 +18,12 @@
   "module": "./lib-esm/index.js",
   "scripts": {
     "prebuild": "rm -rf lib && rm -rf lib-esm",
-    "build": "pnpm prebuild && tsc && tsc --p tsconfig.esm.json",
-    "generate:types": "pnpm graphql-codegen --config codegen.yml",
+    "build": "npm run prebuild && tsc && tsc --p tsconfig.esm.json",
+    "generate:types": "npm graphql-codegen --config codegen.yml",
     "schema:unusedOperations": "ts-node ./scripts/checkUnusedResolvers.ts",
     "test": "jest --watch",
-    "package:publish": "pnpm build && npm publish"
+    "ci": "jest",
+    "package:publish": "npm run build && npm publish"
   },
   "author": "Ovrsea",
   "license": "MIT",

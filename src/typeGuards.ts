@@ -5,7 +5,7 @@ import {
   OperationDefinitionNode,
   SelectionNode,
 } from "graphql";
-import { FilePath } from "./detectUnusedResolvers";
+import { FilePath } from "./detectUnusedOperations";
 
 export const isFragmentDefinitionNode = (
   definitionNode: DefinitionNode
@@ -17,7 +17,7 @@ export const isOperationDefinitionNode = (
 ): definitionNode is OperationDefinitionNode =>
   definitionNode.kind === "OperationDefinition";
 
-export const isResolverDefinition = (
+export const isOperationDefinition = (
   selection: SelectionNode
 ): selection is FieldNode => selection.kind === "Field";
 
