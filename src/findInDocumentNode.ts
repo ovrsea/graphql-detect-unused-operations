@@ -5,11 +5,11 @@ import {
   SelectionSetNode,
 } from "graphql";
 import { flatten, union } from "lodash";
-import { FragmentsAndResolvers } from "./detectUnusedResolvers";
+import { FragmentsAndOperations } from "./detectUnusedOperations";
 import {
   isFragmentDefinitionNode,
   isOperationDefinitionNode,
-  isResolverDefinition,
+  isOperationDefinition,
 } from "./typeGuards";
 
 const findFragmentSpreadInSelectionSet = (
@@ -30,15 +30,15 @@ const findFragmentSpreadInSelectionSet = (
   );
 };
 
-const findResolversAndSpreadFragmentsInDocumentNode = (
+const findOperationsAndSpreadFragmentsInDocumentNode = (
   node: DocumentNode
-): { resolvedResolvers: string[]; spreadFragments: string[] } => {
-  const resolvedResolvers =
+): { resolvedOperations: string[]; spreadFragments: string[] } => {
+  const resolvedOperations =
     node.definitions
       .filter(isOperationDefinitionNode)
       .map((definition: OperationDefinitionNode) => {
         return definition.selectionSet.selections
-          .filter(isResolverDefinition)
+          .filter(isOperationDefinition)
           .map((selection) => {
             return selection.name.value;
           });
@@ -54,7 +54,7 @@ const findResolversAndSpreadFragmentsInDocumentNode = (
   );
 
   return {
-    resolvedResolvers: flatten(resolvedResolvers),
+    resolvedOperations: flatten(resolvedOperations),
     spreadFragments,
   };
 };
@@ -85,20 +85,20 @@ const findDeclaredAndSpreadFragmentsInDocumentNode = (
 
 export const parseDocumentNode = (
   document: DocumentNode
-): FragmentsAndResolvers => {
-  const resolversAndSpreadFragmentsInDocumentNode =
-    findResolversAndSpreadFragmentsInDocumentNode(document);
+): FragmentsAndOperations => {
+  const OperationsAndSpreadFragmentsInDocumentNode =
+    findOperationsAndSpreadFragmentsInDocumentNode(document);
   const declaredAndSpreadFragmentsInDocumentNode =
     findDeclaredAndSpreadFragmentsInDocumentNode(document);
 
   return {
     declaredFragments:
       declaredAndSpreadFragmentsInDocumentNode.declaredFragments,
-    resolvedResolvers:
-      resolversAndSpreadFragmentsInDocumentNode.resolvedResolvers,
+    resolvedOperations:
+      OperationsAndSpreadFragmentsInDocumentNode.resolvedOperations,
     spreadFragments: union(
       declaredAndSpreadFragmentsInDocumentNode.spreadFragments,
-      resolversAndSpreadFragmentsInDocumentNode.spreadFragments
+      OperationsAndSpreadFragmentsInDocumentNode.spreadFragments
     ),
   };
 };

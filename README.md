@@ -1,6 +1,6 @@
 # Ovrsea GraphQL Schema Checker
 
-A GraphQL Schema Checker that reads through your codebase and compares the graphql resolvers (queries & mutations) and fragments used with your project's graphql `schema.json` and returns the unused resolvers and fragments to keep a clean codebase.
+A GraphQL Schema Checker that reads through your codebase and compares the graphql operations (queries & mutations) and fragments used with your project's graphql `schema.json` and returns the unused operations and fragments to keep a clean codebase.
 
 ## Quickstart
 
@@ -21,12 +21,12 @@ type Options = {
   whitelist?: FilePath | string[];
 };
 
-const detectUnusedResolvers = async (
+const detectUnusedOperations = async (
   schema: Schema,
   options: Options = {}) =>: Promise<{
-    unnecessarilyWhitelistedResolvers: string[];
+    unnecessarilyWhitelistedOperations: string[];
     unusedFragments: string[];
-    unusedResolvers: string[];
+    unusedOperations: string[];
   }> {};
 ```
 
@@ -43,14 +43,14 @@ An example is available in `.unused-operations-ignore.example`
 
 `verbose`: Adds more log. Defaults to `false`,
 
-`whitelist`: `FilePath` (`string`) to a whitelist of resolvers (queries and mutations only) or `string[]` of resolvers to whitelist. Defaults to `./.unused-operations-whitelist `. An example is available in `.unused-operations-whitelist.example`
+`whitelist`: `FilePath` (`string`) to a whitelist of operations (queries and mutations only) or `string[]` of operations to whitelist. Defaults to `./.unused-operations-whitelist `. An example is available in `.unused-operations-whitelist.example`
 
 ## Return values
 
 ```js
-const detectUnusedResolvers = async (...) =>: Promise<{
-    unnecessarilyWhitelistedResolvers: string[];
+const detectUnusedOperations = async (...) =>: Promise<{
+    unnecessarilyWhitelistedOperations: string[];
     unusedFragments: string[];
-    unusedResolvers: string[];
+    unusedOperations: string[];
   }> {};
 ```

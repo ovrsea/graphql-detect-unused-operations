@@ -1,9 +1,9 @@
 import * as path from "path";
 import { DocumentNode } from "graphql";
 import {
-  detectUnusedResolvers,
+  detectUnusedOperations,
   readFileToArray,
-} from "../src/detectUnusedResolvers";
+} from "../src/detectUnusedOperations";
 import { parseDocumentNode } from "../src/findInDocumentNode";
 
 describe("Queries tests", () => {
@@ -12,14 +12,14 @@ describe("Queries tests", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/queries/myQuery.ts",
       verbose: false,
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       [
         "complexQuery",
         "unusedQuery",
@@ -35,14 +35,14 @@ describe("Queries tests", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/queries/**/*.ts",
       verbose: false,
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       [
         "unusedQuery",
         "basicMutation",
@@ -59,14 +59,14 @@ describe("Mutations tests", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/mutations/myMutation.ts",
       verbose: false,
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       [
         "basicQuery",
         "complexQuery",
@@ -82,14 +82,14 @@ describe("Mutations tests", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/mutations/**/*.ts",
       verbose: false,
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       ["basicQuery", "complexQuery", "unusedQuery", "unusedMutation"].sort()
     );
   });
@@ -101,7 +101,7 @@ describe("Fragments tests", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedFragments } = await detectUnusedResolvers(schema, {
+    const { unusedFragments } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/fragments/myDeepObjectFragment.ts",
       verbose: false,
@@ -116,7 +116,7 @@ describe("Fragments tests", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedFragments } = await detectUnusedResolvers(schema, {
+    const { unusedFragments } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/fragments/**/*.ts",
       verbose: false,
@@ -134,7 +134,7 @@ describe("Find fragments", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedFragments } = await detectUnusedResolvers(schema, {
+    const { unusedFragments } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/queries/nestedFolder/myComplexQuery.ts",
       verbose: false,
@@ -148,7 +148,7 @@ describe("Find fragments", () => {
     const schema = require("./schema.json");
 
     // When
-    const { unusedFragments, unusedResolvers } = await detectUnusedResolvers(
+    const { unusedFragments, unusedOperations } = await detectUnusedOperations(
       schema,
       {
         cwd: path.resolve(process.cwd(), "./"),
@@ -158,7 +158,7 @@ describe("Find fragments", () => {
     );
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       ["unusedQuery", "unusedMutation"].sort()
     );
     expect(unusedFragments.sort()).toEqual(["unusedFragment"].sort());
@@ -166,12 +166,12 @@ describe("Find fragments", () => {
 });
 
 describe(".unused-operations-ignore and .unused-operations-whitelist files", () => {
-  it("should whitelist the unusedQuery and unusedMutation resolvers", async () => {
+  it("should whitelist the unusedQuery and unusedMutation Operations", async () => {
     // Given
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/mutations/myMutation.ts",
       verbose: false,
@@ -179,12 +179,12 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       ["basicQuery", "complexQuery", "complexMutation"].sort()
     );
   });
 
-  it("should whitelist the unusedQuery and unusedMutation resolvers with comments in whitelist", async () => {
+  it("should whitelist the unusedQuery and unusedMutation Operations with comments in whitelist", async () => {
     // Given
     const whitelistFilename =
       "tests/.unused-operations-whitelist-with-comments-and-empty-lines";
@@ -201,7 +201,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       ignore: "tests/.unused-operations-ignore",
       pattern: "tests/**/*.ts",
@@ -209,7 +209,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       [
         "complexMutation",
         "complexQuery",
@@ -224,7 +224,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     const schema = require("./schema.json");
 
     // When
-    const { unusedResolvers } = await detectUnusedResolvers(schema, {
+    const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       ignore: ["**/nestedFolder/**"],
       pattern: "tests/**/*.ts",
@@ -232,7 +232,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     });
 
     // Then
-    expect(unusedResolvers.sort()).toEqual(
+    expect(unusedOperations.sort()).toEqual(
       [
         "complexMutation",
         "complexQuery",
@@ -242,33 +242,33 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     );
   });
 
-  it("should find basicMutation in unnecessarilyWhitelistedResolvers with whitelist file path", async () => {
+  it("should find basicMutation in unnecessarilyWhitelistedOperations with whitelist file path", async () => {
     // Given
     const schema = require("./schema.json");
 
     // When
-    const { unnecessarilyWhitelistedResolvers } = await detectUnusedResolvers(
+    const { unnecessarilyWhitelistedOperations } = await detectUnusedOperations(
       schema,
       {
         cwd: path.resolve(process.cwd(), "./"),
         pattern: "tests/mutations/myMutation.ts",
         verbose: false,
-        whitelist: "tests/.unused-operations-whitelist-used-resolvers",
+        whitelist: "tests/.unused-operations-whitelist-used-Operations",
       }
     );
 
     // Then
-    expect(unnecessarilyWhitelistedResolvers.sort()).toEqual(
+    expect(unnecessarilyWhitelistedOperations.sort()).toEqual(
       ["basicMutation"].sort()
     );
   });
 
-  it("should find basicMutation in unnecessarilyWhitelistedResolvers with whitelist array", async () => {
+  it("should find basicMutation in unnecessarilyWhitelistedOperations with whitelist array", async () => {
     // Given
     const schema = require("./schema.json");
 
     // When
-    const { unnecessarilyWhitelistedResolvers } = await detectUnusedResolvers(
+    const { unnecessarilyWhitelistedOperations } = await detectUnusedOperations(
       schema,
       {
         cwd: path.resolve(process.cwd(), "./"),
@@ -279,7 +279,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     );
 
     // Then
-    expect(unnecessarilyWhitelistedResolvers.sort()).toEqual(
+    expect(unnecessarilyWhitelistedOperations.sort()).toEqual(
       ["basicMutation"].sort()
     );
   });
@@ -314,9 +314,9 @@ describe("AST Parsing tests", () => {
       kind: "Document",
     };
 
-    const { resolvedResolvers } = parseDocumentNode(simpleDocumentNode);
+    const { resolvedOperations } = parseDocumentNode(simpleDocumentNode);
 
-    expect(resolvedResolvers).toEqual(["basicQuery"]);
+    expect(resolvedOperations).toEqual(["basicQuery"]);
   });
 
   it("Should parse complex DocumentNode with OperationDefinition and FragmentSpread", () => {
@@ -374,10 +374,10 @@ describe("AST Parsing tests", () => {
       kind: "Document",
     };
 
-    const { resolvedResolvers, spreadFragments } =
+    const { resolvedOperations, spreadFragments } =
       parseDocumentNode(simpleDocumentNode);
 
-    expect(resolvedResolvers).toEqual(["complexQuery"]);
+    expect(resolvedOperations).toEqual(["complexQuery"]);
     expect(spreadFragments).toEqual(["deepObjectFragment"]);
   });
 

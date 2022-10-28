@@ -1,7 +1,7 @@
 import { find } from "lodash";
 import { Schema, SchemaField } from "./schema";
 
-const findResolversInSchemaByType = (
+const findOperationsInSchemaByType = (
   schema: Schema,
   type: string
 ): SchemaField[] => {
@@ -15,7 +15,7 @@ const findResolversInSchemaByType = (
 
 export const parseSchema = (schema: Schema): string[] => {
   return [
-    ...findResolversInSchemaByType(schema, "Query"),
-    ...findResolversInSchemaByType(schema, "Mutation"),
+    ...findOperationsInSchemaByType(schema, "Query"),
+    ...findOperationsInSchemaByType(schema, "Mutation"),
   ].map((elem) => elem.name);
 };
