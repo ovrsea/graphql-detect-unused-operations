@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./lib",
+    "types": ["node"]
+  },
+  "include": ["**/*"],
+  "exclude": ["lib", "node_modules", "**/*.test.ts"],
+}

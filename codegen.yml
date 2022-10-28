@@ -1,0 +1,22 @@
+overwrite: true
+
+generates:
+  ./graphql.schema.json:
+    schema: "./tests/schema.graphql"
+    plugins:
+      - "introspection"
+    config:
+      apolloClientVersion: 3
+
+  types/operationsTypes.ts:
+    schema: "./tests/schema.graphql"
+    documents: "**/*.ts"
+    plugins:
+      - typescript
+      - typescript-operations
+  types/resolvers.ts:
+    schema: "./tests/schema.graphql"
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
+    

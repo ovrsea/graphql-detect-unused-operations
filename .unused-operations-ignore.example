@@ -1,0 +1,11 @@
+**/node_modules/**
+**/dist/**
+**/build/**
+**/public/**
+**/__tests__/**
+**/__mocks__/**
+**/scripts/**
+**/lib*/**
+**/.git/**
+**/*.d.ts/**
+*.config.*

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "sourceMap": true, // allow sourcemap support
+    "module": "esnext", // specify module code generation
+    "jsx": "react", // use typescript to transpile jsx to js
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "checkJs": false,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "skipDefaultLibCheck": true,
+    "sourceRoot": "/",
+    "baseUrl": ".",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+  },
+  "include": ["src"],
+  "exclude": ["/lib/", "/lib-esm/", "/node_modules/", "**/__tests__/*"],
+  "types": ["jest"],
+  "typeRoots": ["node_modules/@types"]
+}

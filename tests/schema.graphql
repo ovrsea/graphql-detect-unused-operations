@@ -1,0 +1,29 @@
+type Query {
+	basicQuery(id: String!): MyObject!
+	complexQuery(id: String!): MyObject!
+	unusedQuery: Boolean!
+}
+
+type Mutation {
+	basicMutation(unusedVariable: Boolean): MyObject!
+	complexMutation(scalarField: String!): MyObject!
+	unusedMutation: Boolean!
+}
+
+type MyObject {
+	id: ID!
+	subObject: MyDeepObject!
+	scalarField: String!
+}
+
+type MyDeepObject {
+  name: String!
+  age: Int!
+  evenDeeperObject: MyEvenDeeperObject!
+}
+
+type MyEvenDeeperObject {
+  id: ID!
+}
+
+
