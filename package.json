@@ -22,7 +22,7 @@
     "generate:types": "npm graphql-codegen --config codegen.yml",
     "schema:unusedOperations": "ts-node ./scripts/checkUnusedResolvers.ts",
     "test": "jest --watch",
-    "ci": "jest",
+    "ci:test": "jest",
     "package:publish": "npm run build && npm publish"
   },
   "author": "Ovrsea",
