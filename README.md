@@ -54,3 +54,7 @@ const detectUnusedOperations = async (...) =>: Promise<{
     unusedOperations: string[];
   }> {};
 ```
+
+## License
+
+This project is [MIT licensed](./LICENSE).
