@@ -253,7 +253,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
         cwd: path.resolve(process.cwd(), "./"),
         pattern: "tests/mutations/myMutation.ts",
         verbose: false,
-        whitelist: "tests/.unused-operations-whitelist-used-Operations",
+        whitelist: "tests/.unused-operations-whitelist-used-operations",
       }
     );
 
