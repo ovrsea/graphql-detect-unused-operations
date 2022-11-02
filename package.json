@@ -1,6 +1,6 @@
 {
   "name": "@ovrsea/graphql-detect-unused-operations",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Library to check unused resolvers at Ovrsea",
   "keywords": [
     "graphql",
