@@ -119,11 +119,10 @@ const getAllFragmentsAndOperations = async (
   files: string[],
   verbose?: boolean
 ) => {
-  return (await Promise.all(files.map(loadAndParseFile(verbose)))).reduce(
-    (acc, currentFragmentsAndOperations) => {
-      return getUnionOfFragmentsAndOperations(acc, currentFragmentsAndOperations);
-    },
-    defaultReduceValues
+    const parsedFiles = await Promise.all(files.map(loadAndParseFile(verbose)))
+    return parsedFiles.reduce(
+     (acc, currentFragmentsAndOperations) => getUnionOfFragmentsAndOperations(acc, currentFragmentsAndOperations),
+     defaultReduceValues
   );
 };
 
