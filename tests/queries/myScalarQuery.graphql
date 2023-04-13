@@ -1,0 +1,6 @@
+query basicScalarQuery($id: String!) {
+  basicScalarQuery(id: $id) {
+    id
+    scalarField
+  }
+}

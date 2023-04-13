@@ -21,6 +21,31 @@ describe("Queries tests", () => {
     // Then
     expect(unusedOperations.sort()).toEqual(
       [
+        "basicScalarQuery",
+        "complexQuery",
+        "unusedQuery",
+        "basicMutation",
+        "complexMutation",
+        "unusedMutation",
+      ].sort()
+    );
+  });
+
+  it("find unused queries in single .graphql file", async () => {
+    // Given
+    const schema = require("./schema.json");
+
+    // When
+    const { unusedOperations } = await detectUnusedOperations(schema, {
+      cwd: path.resolve(process.cwd(), "./"),
+      pattern: "tests/queries/myScalarQuery.graphql",
+      verbose: false,
+    });
+
+    // Then
+    expect(unusedOperations.sort()).toEqual(
+      [
+        "basicQuery",
         "complexQuery",
         "unusedQuery",
         "basicMutation",
@@ -41,9 +66,9 @@ describe("Queries tests", () => {
       verbose: false,
     });
 
-    // Then
     expect(unusedOperations.sort()).toEqual(
       [
+        "basicScalarQuery",
         "unusedQuery",
         "basicMutation",
         "complexMutation",
@@ -68,6 +93,7 @@ describe("Mutations tests", () => {
     // Then
     expect(unusedOperations.sort()).toEqual(
       [
+        "basicScalarQuery",
         "basicQuery",
         "complexQuery",
         "unusedQuery",
@@ -90,7 +116,13 @@ describe("Mutations tests", () => {
 
     // Then
     expect(unusedOperations.sort()).toEqual(
-      ["basicQuery", "complexQuery", "unusedQuery", "unusedMutation"].sort()
+      [
+        "basicScalarQuery",
+        "basicQuery",
+        "complexQuery",
+        "unusedQuery",
+        "unusedMutation",
+      ].sort()
     );
   });
 });
@@ -152,7 +184,7 @@ describe("Find fragments", () => {
       schema,
       {
         cwd: path.resolve(process.cwd(), "./"),
-        pattern: "tests/**/*.ts",
+        pattern: "tests/**/*.{ts,graphql}",
         verbose: false,
       }
     );
@@ -180,7 +212,12 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
 
     // Then
     expect(unusedOperations.sort()).toEqual(
-      ["basicQuery", "complexQuery", "complexMutation"].sort()
+      [
+        "basicScalarQuery",
+        "basicQuery",
+        "complexQuery",
+        "complexMutation",
+      ].sort()
     );
   });
 
@@ -211,6 +248,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     // Then
     expect(unusedOperations.sort()).toEqual(
       [
+        "basicScalarQuery",
         "complexMutation",
         "complexQuery",
         "unusedQuery",
@@ -234,6 +272,7 @@ describe(".unused-operations-ignore and .unused-operations-whitelist files", () 
     // Then
     expect(unusedOperations.sort()).toEqual(
       [
+        "basicScalarQuery",
         "complexMutation",
         "complexQuery",
         "unusedQuery",

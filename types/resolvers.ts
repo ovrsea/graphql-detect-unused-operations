@@ -46,6 +46,7 @@ export type MyEvenDeeperObject = {
 export type MyObject = {
   __typename?: 'MyObject';
   id: Scalars['ID'];
+  onlyInGraphQLFile?: Maybe<Scalars['String']>;
   scalarField: Scalars['String'];
   subObject: MyDeepObject;
 };
@@ -53,12 +54,18 @@ export type MyObject = {
 export type Query = {
   __typename?: 'Query';
   basicQuery: MyObject;
+  basicScalarQuery: MyObject;
   complexQuery: MyObject;
   unusedQuery: Scalars['Boolean'];
 };
 
 
 export type QueryBasicQueryArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryBasicScalarQueryArgs = {
   id: Scalars['String'];
 };
 
@@ -180,6 +187,7 @@ export type MyEvenDeeperObjectResolvers<ContextType = any, ParentType extends Re
 
 export type MyObjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['MyObject'] = ResolversParentTypes['MyObject']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  onlyInGraphQLFile?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   scalarField?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subObject?: Resolver<ResolversTypes['MyDeepObject'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -187,6 +195,7 @@ export type MyObjectResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   basicQuery?: Resolver<ResolversTypes['MyObject'], ParentType, ContextType, RequireFields<QueryBasicQueryArgs, 'id'>>;
+  basicScalarQuery?: Resolver<ResolversTypes['MyObject'], ParentType, ContextType, RequireFields<QueryBasicScalarQueryArgs, 'id'>>;
   complexQuery?: Resolver<ResolversTypes['MyObject'], ParentType, ContextType, RequireFields<QueryComplexQueryArgs, 'id'>>;
   unusedQuery?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
 };

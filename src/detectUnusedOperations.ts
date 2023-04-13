@@ -97,7 +97,9 @@ const loadAndParseFile =
       const sources = await loadDocuments(file, {
         loaders: [new CodeFileLoader(), new GraphQLFileLoader()],
       });
-
+      if (verbose) {
+        console.log("\x1b[36m%s\x1b[0m", "Sources", sources);
+      }
       const ret = sources
         .filter(({ document }) => document !== undefined)
         .map(({ document }: Source) => {
@@ -109,6 +111,9 @@ const loadAndParseFile =
             currentFragmentsAndOperations
           );
         }, defaultReduceValues);
+      if (verbose) {
+        console.log("\x1b[36m%s\x1b[0m", "Ret", ret);
+      }
 
       return ret;
     } catch (error) {
@@ -120,10 +125,12 @@ const getAllFragmentsAndOperations = async (
   files: string[],
   verbose?: boolean
 ) => {
-    const parsedFiles = await Promise.all(files.map(loadAndParseFile(verbose)))
-    return parsedFiles.reduce(
-     (acc, currentFragmentsAndOperations) => getUnionOfFragmentsAndOperations(acc, currentFragmentsAndOperations),
-     defaultReduceValues
+  const parsedFiles = await Promise.all(files.map(loadAndParseFile(verbose)));
+
+  return parsedFiles.reduce(
+    (acc, currentFragmentsAndOperations) =>
+      getUnionOfFragmentsAndOperations(acc, currentFragmentsAndOperations),
+    defaultReduceValues
   );
 };
 
@@ -143,6 +150,13 @@ export const detectUnusedOperations = async (
     whitelist = "./.unused-operations-whitelist",
   } = options;
   const schemaOperationsList = parseSchema(schema);
+  if (verbose) {
+    console.log(
+      "\x1b[36m%s\x1b[0m",
+      "Schema operations list",
+      schemaOperationsList
+    );
+  }
 
   if (!schemaOperationsList.length) {
     throw new Error("Bloody schema without queries or mutations");
@@ -156,7 +170,7 @@ export const detectUnusedOperations = async (
 
   // eslint-disable-next-line
   const allFragmentsAndOperations: FragmentsAndOperations =
-    await getAllFragmentsAndOperations(files);
+    await getAllFragmentsAndOperations(files, verbose);
   const whitelistFragmentsAndOperations = isPath(whitelist)
     ? readFileToArray(whitelist)
     : whitelist;

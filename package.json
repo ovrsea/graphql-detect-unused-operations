@@ -19,7 +19,7 @@
   "scripts": {
     "prebuild": "rm -rf lib && rm -rf lib-esm",
     "build": "npm run prebuild && tsc && tsc --p tsconfig.esm.json",
-    "generate:types": "npm graphql-codegen --config codegen.yml",
+    "generate:types": "npx graphql-codegen --config codegen.yml",
     "schema:unusedOperations": "ts-node ./scripts/checkUnusedResolvers.ts",
     "test": "jest --watch",
     "ci:test": "jest",

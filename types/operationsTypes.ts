@@ -44,6 +44,7 @@ export type MyEvenDeeperObject = {
 export type MyObject = {
   __typename?: 'MyObject';
   id: Scalars['ID'];
+  onlyInGraphQLFile?: Maybe<Scalars['String']>;
   scalarField: Scalars['String'];
   subObject: MyDeepObject;
 };
@@ -51,12 +52,18 @@ export type MyObject = {
 export type Query = {
   __typename?: 'Query';
   basicQuery: MyObject;
+  basicScalarQuery: MyObject;
   complexQuery: MyObject;
   unusedQuery: Scalars['Boolean'];
 };
 
 
 export type QueryBasicQueryArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryBasicScalarQueryArgs = {
   id: Scalars['String'];
 };
 
