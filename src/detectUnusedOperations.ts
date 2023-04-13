@@ -5,6 +5,7 @@ import * as glob from "glob";
 import { loadDocuments } from "@graphql-tools/load";
 import { Source } from "@graphql-tools/utils";
 import { CodeFileLoader } from "@graphql-tools/code-file-loader";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
 import { DocumentNode } from "graphql";
 import { parseDocumentNode } from "./findInDocumentNode";
 import { parseSchema } from "./parseSchema";
@@ -94,7 +95,7 @@ const loadAndParseFile =
 
     try {
       const sources = await loadDocuments(file, {
-        loaders: [new CodeFileLoader()],
+        loaders: [new CodeFileLoader(), new GraphQLFileLoader()],
       });
 
       const ret = sources
