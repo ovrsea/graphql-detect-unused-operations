@@ -15,7 +15,7 @@ describe("Queries tests", () => {
     const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/queries/myQuery.ts",
-      verbose: true,
+      verbose: false,
     });
 
     // Then
@@ -63,7 +63,7 @@ describe("Queries tests", () => {
     const { unusedOperations } = await detectUnusedOperations(schema, {
       cwd: path.resolve(process.cwd(), "./"),
       pattern: "tests/queries/**/*.ts",
-      verbose: true,
+      verbose: false,
     });
 
     expect(unusedOperations.sort()).toEqual(
