@@ -1,19 +1,21 @@
 type Query {
-	basicQuery(id: String!): MyObject!
-	complexQuery(id: String!): MyObject!
-	unusedQuery: Boolean!
+  basicQuery(id: String!): MyObject!
+  basicScalarQuery(id: String!): MyObject!
+  complexQuery(id: String!): MyObject!
+  unusedQuery: Boolean!
 }
 
 type Mutation {
-	basicMutation(unusedVariable: Boolean): MyObject!
-	complexMutation(scalarField: String!): MyObject!
-	unusedMutation: Boolean!
+  basicMutation(unusedVariable: Boolean): MyObject!
+  complexMutation(scalarField: String!): MyObject!
+  unusedMutation: Boolean!
 }
 
 type MyObject {
-	id: ID!
-	subObject: MyDeepObject!
-	scalarField: String!
+  id: ID!
+  subObject: MyDeepObject!
+  scalarField: String!
+  onlyInGraphQLFile: String
 }
 
 type MyDeepObject {
